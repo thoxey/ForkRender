@@ -32,3 +32,5 @@
 Portals
 Makefile
 *moc
+.qmake*
+*.user
