@@ -34,3 +34,9 @@ Makefile
 *moc
 .qmake*
 *.user
+
+.qmake.stash
+
+Portals.pro.user.fdf0b8f
+
+*.user

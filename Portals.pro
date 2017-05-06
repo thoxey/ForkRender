@@ -27,3 +27,5 @@ MOC_DIR = $$PWD/moc
 UI_DIR = $$PWD/include
 
 FORMS    += $$PWD/ui/mainwindow.ui
+
+OTHER_FILES += $$PWD/shaders/*.glsl
