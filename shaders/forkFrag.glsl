@@ -6,8 +6,6 @@ in vec3 fragWorldPos;
 
 in vec3 fragNormal;
 
-uniform vec4 colour;
-
 uniform samplerCube envMap;
 
 
@@ -24,7 +22,7 @@ struct LightInfo {
 
 // We'll have a single light in the scene with some default values
 LightInfo Light = LightInfo(
-            vec4(5.0, 5.0, 10.0, 1.0),  // position
+            vec4(5.0, 15.0, 10.0, 1.0),  // position
             vec3(0.2, 0.2, 0.2),        // La
             vec3(1.0, 1.0, 1.0),        // Ld
             vec3(1.0, 1.0, 1.0)         // Ls
@@ -68,10 +66,10 @@ void main() {
                 Light.Ls * Material.Ks * pow( max( dot(r,v), 0.0 ), Material.Shininess ));
 
 
-    vec4 envColour = texture(envMap, reflect(v,n), 0.5f);
+    vec4 envColour = texture(envMap, refract(v,n, 1.5f), 0.5f);
 
     // Set the output color of our current pixel
-    vec4 mainColour = vec4(LightIntensity,1.0) * colour;
+    vec4 mainColour = vec4(LightIntensity,1.0);
 
     FragColor = envColour * mainColour;
 }

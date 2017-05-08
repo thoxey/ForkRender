@@ -30,57 +30,6 @@
        <set>Qt::AlignCenter</set>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="5" column="0">
-        <widget class="QGroupBox" name="groupBox_4">
-         <property name="title">
-          <string>Colour</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="1" column="2">
-           <spacer name="horizontalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Minimum</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="1" column="0">
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Minimum</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="m_colour_picker">
-            <property name="text">
-             <string>Colour Picker</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
        <item row="2" column="0">
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
@@ -205,36 +154,42 @@
         </widget>
        </item>
        <item row="7" column="0">
-        <widget class="QGroupBox" name="groupBox_5">
+        <widget class="QGroupBox" name="groupBox_6">
          <property name="title">
-          <string>Zoom</string>
+          <string>Other Controls</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
-         <layout class="QGridLayout" name="gridLayout_5">
+         <layout class="QGridLayout" name="gridLayout_6">
           <item row="0" column="0">
-           <widget class="QSlider" name="m_Zoom">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+           <widget class="QPushButton" name="m_Reset_Button">
+            <property name="text">
+             <string>Reset All Values</string>
             </property>
-            <property name="minimum">
-             <number>1</number>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="m_Scratches_Button">
+            <property name="text">
+             <string>Scratches</string>
             </property>
-            <property name="maximum">
-             <number>32</number>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="m_Env_Button">
+            <property name="text">
+             <string>Env Map</string>
             </property>
-            <property name="value">
-             <number>16</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="invertedControls">
+            <property name="checked">
              <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="m_Spin_Button">
+            <property name="text">
+             <string>Spin</string>
             </property>
            </widget>
           </item>
@@ -361,64 +316,45 @@
          </layout>
         </widget>
        </item>
-       <item row="9" column="0">
-        <widget class="QGroupBox" name="groupBox_6">
+       <item row="5" column="0">
+        <widget class="QGroupBox" name="groupBox_5">
          <property name="title">
-          <string>Other Controls</string>
+          <string>Zoom</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
-         <layout class="QGridLayout" name="gridLayout_6">
+         <layout class="QGridLayout" name="gridLayout_5">
           <item row="0" column="0">
-           <widget class="QPushButton" name="m_Reset_Button">
-            <property name="text">
-             <string>Reset All Values</string>
+           <widget class="QSlider" name="m_Zoom">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QCheckBox" name="m_Scratches_Button">
-            <property name="text">
-             <string>Scratches</string>
+            <property name="minimum">
+             <number>1</number>
             </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="m_Env_Button">
-            <property name="text">
-             <string>Env Map</string>
+            <property name="maximum">
+             <number>32</number>
             </property>
-            <property name="checked">
+            <property name="value">
+             <number>16</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="invertedControls">
              <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QPushButton" name="m_Spin_Button">
-            <property name="text">
-             <string>Spin</string>
             </property>
            </widget>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="8" column="0">
-        <spacer name="verticalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="6" column="0">
-        <spacer name="verticalSpacer_3">
+       <item row="4" column="0">
+        <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -443,8 +379,8 @@
          </property>
         </spacer>
        </item>
-       <item row="4" column="0">
-        <spacer name="verticalSpacer">
+       <item row="6" column="0">
+        <spacer name="verticalSpacer_4">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -480,7 +416,7 @@
      <x>0</x>
      <y>0</y>
      <width>891</width>
-     <height>19</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

@@ -15,6 +15,8 @@
 
 #include <QOpenGLWidget>
 
+#include "fork.h"
+
 class NGLScene : public QOpenGLWidget
 {
   Q_OBJECT
@@ -35,8 +37,6 @@ public slots :
 
   void setZoom(int _v);
 
-  void setColour();
-
   void swapSpin();
 
   void setEnvToggle(bool _v);
@@ -44,10 +44,12 @@ public slots :
 private :
   ngl::Vec3 m_Trn;
   ngl::Vec3 m_Rot;
-  ngl::Vec4 m_Col = {0.2, 0.4, 0.8, 1.0f};
+  ngl::Vec4 m_Col = {0.9, 0.9, 0.9, 1.0f};
 
   bool m_turnatable;
   float m_deltaTime;
+
+  forkObj myFork;
 
   std::unique_ptr<ngl::Obj> m_mesh;
   float m_Zoom;

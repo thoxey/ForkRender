@@ -20,8 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
   connect(ui->m_Zoom,SIGNAL(valueChanged(int)), m_gl,SLOT(setZoom(int)));
 
-  connect(ui->m_colour_picker,SIGNAL(clicked(bool)),m_gl,SLOT(setColour()));
-
   connect(ui->m_Spin_Button,SIGNAL(clicked(bool)),m_gl,SLOT(swapSpin()));
 }
 

@@ -36,11 +36,6 @@ public:
     QGridLayout *s_gridLayout;
     QGroupBox *groupBox;
     QGridLayout *gridLayout_2;
-    QGroupBox *groupBox_4;
-    QGridLayout *gridLayout_4;
-    QSpacerItem *horizontalSpacer_3;
-    QSpacerItem *horizontalSpacer_2;
-    QPushButton *m_colour_picker;
     QGroupBox *groupBox_2;
     QGridLayout *gridLayout_3;
     QLabel *xRotLabel_2;
@@ -49,9 +44,12 @@ public:
     QSlider *m_x_rotation;
     QSlider *m_y_rotation;
     QSlider *m_z_rotation;
-    QGroupBox *groupBox_5;
-    QGridLayout *gridLayout_5;
-    QSlider *m_Zoom;
+    QGroupBox *groupBox_6;
+    QGridLayout *gridLayout_6;
+    QPushButton *m_Reset_Button;
+    QCheckBox *m_Scratches_Button;
+    QCheckBox *m_Env_Button;
+    QPushButton *m_Spin_Button;
     QGroupBox *groupBox_3;
     QGridLayout *gridLayout;
     QSlider *m_y_trn_slider;
@@ -60,16 +58,12 @@ public:
     QLabel *xTrnLabel;
     QLabel *zTrnLabel;
     QSlider *m_x_trn_slider;
-    QGroupBox *groupBox_6;
-    QGridLayout *gridLayout_6;
-    QPushButton *m_Reset_Button;
-    QCheckBox *m_Scratches_Button;
-    QCheckBox *m_Env_Button;
-    QPushButton *m_Spin_Button;
-    QSpacerItem *verticalSpacer_4;
-    QSpacerItem *verticalSpacer_3;
-    QSpacerItem *verticalSpacer_2;
+    QGroupBox *groupBox_5;
+    QGridLayout *gridLayout_5;
+    QSlider *m_Zoom;
     QSpacerItem *verticalSpacer;
+    QSpacerItem *verticalSpacer_2;
+    QSpacerItem *verticalSpacer_4;
     QSpacerItem *horizontalSpacer;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
@@ -97,29 +91,6 @@ public:
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
-        groupBox_4 = new QGroupBox(groupBox);
-        groupBox_4->setObjectName(QStringLiteral("groupBox_4"));
-        groupBox_4->setAlignment(Qt::AlignCenter);
-        gridLayout_4 = new QGridLayout(groupBox_4);
-        gridLayout_4->setSpacing(6);
-        gridLayout_4->setContentsMargins(11, 11, 11, 11);
-        gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
-        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
-
-        gridLayout_4->addItem(horizontalSpacer_3, 1, 2, 1, 1);
-
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
-
-        gridLayout_4->addItem(horizontalSpacer_2, 1, 0, 1, 1);
-
-        m_colour_picker = new QPushButton(groupBox_4);
-        m_colour_picker->setObjectName(QStringLiteral("m_colour_picker"));
-
-        gridLayout_4->addWidget(m_colour_picker, 1, 1, 1, 1);
-
-
-        gridLayout_2->addWidget(groupBox_4, 5, 0, 1, 1);
-
         groupBox_2 = new QGroupBox(groupBox);
         groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
         groupBox_2->setAlignment(Qt::AlignCenter);
@@ -186,27 +157,36 @@ public:
 
         gridLayout_2->addWidget(groupBox_2, 2, 0, 1, 1);
 
-        groupBox_5 = new QGroupBox(groupBox);
-        groupBox_5->setObjectName(QStringLiteral("groupBox_5"));
-        groupBox_5->setAlignment(Qt::AlignCenter);
-        gridLayout_5 = new QGridLayout(groupBox_5);
-        gridLayout_5->setSpacing(6);
-        gridLayout_5->setContentsMargins(11, 11, 11, 11);
-        gridLayout_5->setObjectName(QStringLiteral("gridLayout_5"));
-        m_Zoom = new QSlider(groupBox_5);
-        m_Zoom->setObjectName(QStringLiteral("m_Zoom"));
-        sizePolicy.setHeightForWidth(m_Zoom->sizePolicy().hasHeightForWidth());
-        m_Zoom->setSizePolicy(sizePolicy);
-        m_Zoom->setMinimum(1);
-        m_Zoom->setMaximum(32);
-        m_Zoom->setValue(16);
-        m_Zoom->setOrientation(Qt::Horizontal);
-        m_Zoom->setInvertedControls(true);
+        groupBox_6 = new QGroupBox(groupBox);
+        groupBox_6->setObjectName(QStringLiteral("groupBox_6"));
+        groupBox_6->setAlignment(Qt::AlignCenter);
+        gridLayout_6 = new QGridLayout(groupBox_6);
+        gridLayout_6->setSpacing(6);
+        gridLayout_6->setContentsMargins(11, 11, 11, 11);
+        gridLayout_6->setObjectName(QStringLiteral("gridLayout_6"));
+        m_Reset_Button = new QPushButton(groupBox_6);
+        m_Reset_Button->setObjectName(QStringLiteral("m_Reset_Button"));
 
-        gridLayout_5->addWidget(m_Zoom, 0, 0, 1, 1);
+        gridLayout_6->addWidget(m_Reset_Button, 0, 0, 1, 1);
+
+        m_Scratches_Button = new QCheckBox(groupBox_6);
+        m_Scratches_Button->setObjectName(QStringLiteral("m_Scratches_Button"));
+
+        gridLayout_6->addWidget(m_Scratches_Button, 1, 1, 1, 1);
+
+        m_Env_Button = new QCheckBox(groupBox_6);
+        m_Env_Button->setObjectName(QStringLiteral("m_Env_Button"));
+        m_Env_Button->setChecked(true);
+
+        gridLayout_6->addWidget(m_Env_Button, 1, 0, 1, 1);
+
+        m_Spin_Button = new QPushButton(groupBox_6);
+        m_Spin_Button->setObjectName(QStringLiteral("m_Spin_Button"));
+
+        gridLayout_6->addWidget(m_Spin_Button, 0, 1, 1, 1);
 
 
-        gridLayout_2->addWidget(groupBox_5, 7, 0, 1, 1);
+        gridLayout_2->addWidget(groupBox_6, 7, 0, 1, 1);
 
         groupBox_3 = new QGroupBox(groupBox);
         groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
@@ -270,52 +250,39 @@ public:
 
         gridLayout_2->addWidget(groupBox_3, 0, 0, 1, 1);
 
-        groupBox_6 = new QGroupBox(groupBox);
-        groupBox_6->setObjectName(QStringLiteral("groupBox_6"));
-        groupBox_6->setAlignment(Qt::AlignCenter);
-        gridLayout_6 = new QGridLayout(groupBox_6);
-        gridLayout_6->setSpacing(6);
-        gridLayout_6->setContentsMargins(11, 11, 11, 11);
-        gridLayout_6->setObjectName(QStringLiteral("gridLayout_6"));
-        m_Reset_Button = new QPushButton(groupBox_6);
-        m_Reset_Button->setObjectName(QStringLiteral("m_Reset_Button"));
+        groupBox_5 = new QGroupBox(groupBox);
+        groupBox_5->setObjectName(QStringLiteral("groupBox_5"));
+        groupBox_5->setAlignment(Qt::AlignCenter);
+        gridLayout_5 = new QGridLayout(groupBox_5);
+        gridLayout_5->setSpacing(6);
+        gridLayout_5->setContentsMargins(11, 11, 11, 11);
+        gridLayout_5->setObjectName(QStringLiteral("gridLayout_5"));
+        m_Zoom = new QSlider(groupBox_5);
+        m_Zoom->setObjectName(QStringLiteral("m_Zoom"));
+        sizePolicy.setHeightForWidth(m_Zoom->sizePolicy().hasHeightForWidth());
+        m_Zoom->setSizePolicy(sizePolicy);
+        m_Zoom->setMinimum(1);
+        m_Zoom->setMaximum(32);
+        m_Zoom->setValue(16);
+        m_Zoom->setOrientation(Qt::Horizontal);
+        m_Zoom->setInvertedControls(true);
 
-        gridLayout_6->addWidget(m_Reset_Button, 0, 0, 1, 1);
-
-        m_Scratches_Button = new QCheckBox(groupBox_6);
-        m_Scratches_Button->setObjectName(QStringLiteral("m_Scratches_Button"));
-
-        gridLayout_6->addWidget(m_Scratches_Button, 1, 1, 1, 1);
-
-        m_Env_Button = new QCheckBox(groupBox_6);
-        m_Env_Button->setObjectName(QStringLiteral("m_Env_Button"));
-        m_Env_Button->setChecked(true);
-
-        gridLayout_6->addWidget(m_Env_Button, 1, 0, 1, 1);
-
-        m_Spin_Button = new QPushButton(groupBox_6);
-        m_Spin_Button->setObjectName(QStringLiteral("m_Spin_Button"));
-
-        gridLayout_6->addWidget(m_Spin_Button, 0, 1, 1, 1);
+        gridLayout_5->addWidget(m_Zoom, 0, 0, 1, 1);
 
 
-        gridLayout_2->addWidget(groupBox_6, 9, 0, 1, 1);
+        gridLayout_2->addWidget(groupBox_5, 5, 0, 1, 1);
 
-        verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        gridLayout_2->addItem(verticalSpacer_4, 8, 0, 1, 1);
-
-        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        gridLayout_2->addItem(verticalSpacer_3, 6, 0, 1, 1);
+        gridLayout_2->addItem(verticalSpacer, 4, 0, 1, 1);
 
         verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         gridLayout_2->addItem(verticalSpacer_2, 1, 0, 1, 1);
 
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        gridLayout_2->addItem(verticalSpacer, 4, 0, 1, 1);
+        gridLayout_2->addItem(verticalSpacer_4, 6, 0, 1, 1);
 
 
         s_gridLayout->addWidget(groupBox, 0, 1, 1, 1);
@@ -327,7 +294,7 @@ public:
         MainWindow->setCentralWidget(CentralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 891, 19));
+        menuBar->setGeometry(QRect(0, 0, 891, 22));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -345,22 +312,20 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         groupBox->setTitle(QApplication::translate("MainWindow", "Controls", 0));
-        groupBox_4->setTitle(QApplication::translate("MainWindow", "Colour", 0));
-        m_colour_picker->setText(QApplication::translate("MainWindow", "Colour Picker", 0));
         groupBox_2->setTitle(QApplication::translate("MainWindow", "Rotation", 0));
         xRotLabel_2->setText(QApplication::translate("MainWindow", "X", 0));
         yRotLabel_2->setText(QApplication::translate("MainWindow", "Y", 0));
         zRotLabel_2->setText(QApplication::translate("MainWindow", "Z", 0));
-        groupBox_5->setTitle(QApplication::translate("MainWindow", "Zoom", 0));
-        groupBox_3->setTitle(QApplication::translate("MainWindow", "Translate", 0));
-        yTrnLabel->setText(QApplication::translate("MainWindow", "Y", 0));
-        xTrnLabel->setText(QApplication::translate("MainWindow", "X", 0));
-        zTrnLabel->setText(QApplication::translate("MainWindow", "Z", 0));
         groupBox_6->setTitle(QApplication::translate("MainWindow", "Other Controls", 0));
         m_Reset_Button->setText(QApplication::translate("MainWindow", "Reset All Values", 0));
         m_Scratches_Button->setText(QApplication::translate("MainWindow", "Scratches", 0));
         m_Env_Button->setText(QApplication::translate("MainWindow", "Env Map", 0));
         m_Spin_Button->setText(QApplication::translate("MainWindow", "Spin", 0));
+        groupBox_3->setTitle(QApplication::translate("MainWindow", "Translate", 0));
+        yTrnLabel->setText(QApplication::translate("MainWindow", "Y", 0));
+        xTrnLabel->setText(QApplication::translate("MainWindow", "X", 0));
+        zTrnLabel->setText(QApplication::translate("MainWindow", "Z", 0));
+        groupBox_5->setTitle(QApplication::translate("MainWindow", "Zoom", 0));
     } // retranslateUi
 
 };

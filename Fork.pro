@@ -8,13 +8,14 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = Portals
+TARGET = Fork
 TEMPLATE = app
 
 
 SOURCES += $$PWD/src/*.cpp
 
 HEADERS  += $$PWD/include/*.h
+
 INCLUDEPATH += $$PWD/include/
 include($(HOME)/NGL/UseNGL.pri)
 
