@@ -14,10 +14,11 @@ layout (location=1) in vec2 TexCoord;
 // The vertex normal attribute
 layout (location=2) in vec3 VertexNormal;
 
-out vec3 fragWorldPos;
+smooth out vec3 fragWorldPos;
 
-out vec3 fragNormal;
+smooth out vec3 fragNormal;
 
+smooth out vec2 fragmentTexCoord;
 
 /************************************************************************************/
 void main() {
@@ -27,6 +28,7 @@ void main() {
 
     fragWorldPos = vec3(MV * vec4(VertexPosition, 1.0f));
 
+    fragmentTexCoord = TexCoord;
 
     fragNormal   = N  * VertexNormal;
 

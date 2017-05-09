@@ -38,16 +38,11 @@ void NGLScene::paintGL()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-
     // Our MVP matrices
-
-
     ngl::Mat4 projection,view;
 
     view = ngl::lookAt(ngl::Vec3(m_Zoom,m_Zoom,m_Zoom),ngl::Vec3::zero(), ngl::Vec3::up());
     projection = ngl::perspective(60.0f, 1.0, 0.1,100);
-
 
     //Spin
     if(m_turnatable)
@@ -58,9 +53,8 @@ void NGLScene::paintGL()
     tx.setRotation(m_Rot);
     tx.setPosition(m_Trn);
 
-    myFork.setTransform(tx, projection, view);
+    myFork.setTransform(&tx, projection, view);
     myFork.draw();
-
 
     auto stop = timer.now();
     m_deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count() / 1000.0f;;
@@ -220,8 +214,11 @@ void NGLScene::initEnvironment()
     glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &anisotropy);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy);
 
+    initTexture(1,m_glossMapTex,"images/gloss.png");
+
     // Set our cube map texture to on the shader so we can use it
     ngl::ShaderLib *shader=ngl::ShaderLib::instance();
     shader->use("ForkProgram");
     shader->setRegisteredUniform("envMap", 0);
+    shader->setRegisteredUniform("glossMap", 0);
 }
