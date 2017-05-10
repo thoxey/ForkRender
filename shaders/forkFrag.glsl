@@ -44,7 +44,7 @@ struct MaterialInfo {
 // The object has a material
 uniform MaterialInfo Material = MaterialInfo(
             vec3(0.1, 0.1, 0.1),    // Ka
-            vec3(1.0, 1.0, 1.0),    // Kd
+            vec3(0.9, 0.7, 0.2),    // Kd
             vec3(1.0, 1.0, 1.0),    // Ks
             1.0                    // Shininess
             );
@@ -123,7 +123,7 @@ void main()
     float VdotH = clamp(dot(v,h), 0.0, 1.0);
 
 
-    vec3 specularColour = vec3(0.7);
+    vec3 specularColour = vec3(0.7) * Light.Ld;
 
     vec3 diffuseColour  = vec3(0.8);
 
@@ -136,5 +136,5 @@ void main()
 
     vec3 final =  (specularColour * Rs) + (diffuseColour * (1-fresnel(NdotH)));
 
-    FragColor = /*envColour(v, n) **/ vec4(final, 1.0);
+    FragColor = envColour(v, n) * vec4(final, 1.0);
 }
