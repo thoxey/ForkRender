@@ -38,7 +38,7 @@ void forkObj::draw()
 {
   ngl::ShaderLib *m_shader = ngl::ShaderLib::instance();
   (*m_shader)["ForkProgram"]->use();
-#define TEAPOT
+//#define TEAPOT
 #ifdef TEAPOT
   ngl::VAOPrimitives* prim = ngl::VAOPrimitives::instance();
   prim->draw( "teapot" );

@@ -27,7 +27,7 @@ struct LightInfo {
 
 // We'll have a single light in the scene with some default values
 LightInfo Light = LightInfo(
-            vec4(5.0, 15.0, 10.0, 1.0),  // position
+            vec4(5.0, 1.0, 2.0, 1.0),  // position
             vec3(0.2, 0.2, 0.2),        // La
             vec3(1.0, 1.0, 1.0),        // Ld
             vec3(1.0, 1.0, 1.0)         // Ls
@@ -122,14 +122,19 @@ void main()
     //Dot of the vertex position and the half vector, used for fresnel
     float VdotH = clamp(dot(v,h), 0.0, 1.0);
 
+
+    vec3 specularColour = vec3(0.7);
+
+    vec3 diffuseColour  = vec3(0.8);
+
     //https://github.com/kamil-kolaczynski/synthclipse-demos/blob/master/src/jsx-demos/lighting-models/shaders/model/cook-torrance.glsl
     vec3 Rs_numerator = vec3(fresnel(VdotH)
                              * geoTerm(NdotH, VdotH, NdotL, NdotV)
                              * beckmanRoughness(NdotH));
     float Rs_denominator = NdotV * NdotL;
-    vec3 Rs = Rs_numerator / Rs_denominator;
+    vec3 Rs = clamp(Rs_numerator / Rs_denominator, 0.0, 1.0);
 
-    vec3 final = max(0.0, NdotL) * (vec3(1.0)*Rs + vec3(0.9));
+    vec3 final =  (specularColour * Rs) + (diffuseColour * (1-fresnel(NdotH)));
 
     FragColor = /*envColour(v, n) **/ vec4(final, 1.0);
 }
