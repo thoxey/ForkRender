@@ -46,7 +46,7 @@ uniform MaterialInfo Material = MaterialInfo(
             vec3(0.1, 0.1, 0.1),    // Ka
             vec3(0.9, 0.7, 0.2),    // Kd
             vec3(1.0, 1.0, 1.0),    // Ks
-            1.0                    // Shininess
+            0.5                    // Shininess
             );
 
 float fresnel(float _VdotH)
@@ -72,7 +72,7 @@ float fresnel(float _VdotH)
 float beckmanRoughness(float _NdotH)
 {
     //The shininess squared
-    float mSquared = 1.8f;//Material.Shininess * Material.Shininess;
+    float mSquared = Material.Shininess * Material.Shininess;
 
     //Beckman distribution funcion
     float r1 = 1.0f / (4.0f * mSquared * pow(_NdotH, 4.0f));
@@ -81,7 +81,7 @@ float beckmanRoughness(float _NdotH)
     return r1 * exp(r2/r3);
 }
 
-//https://github.com/kamil-kolaczynski/synthclipse-demos/blob/master/src/jsx-demos/lighting-models/shaders/model/cook-torrance.glsl
+//Cook Paper page 5
 float geoTerm(float _NdotH, float _VdotH, float _NdotL, float _NdotV)
 {
     float geo_numerator = 2.0 * _NdotH;
@@ -97,7 +97,7 @@ vec4 envColour(vec3 _v, vec3 _n)
 
     float smudge = texture(glossMap, fragmentTexCoord).r * 8;
     float roughness = clamp(smudge,0,8);
-    return textureLod(envMap, reflect(_v, _n), roughness)*2;
+    return textureLod(envMap, reflect(_v, _n), roughness);
 
 }
 
@@ -122,19 +122,16 @@ void main()
     //Dot of the vertex position and the half vector, used for fresnel
     float VdotH = clamp(dot(v,h), 0.0, 1.0);
 
+    vec3 specularColour = vec3(envColour(v, n)) * vec3(0.7) * Light.Ld;
 
-    vec3 specularColour = vec3(0.7) * Light.Ld;
-
-    vec3 diffuseColour  = vec3(0.8);
+    vec3 diffuseColour  =  vec3(0.7);
 
     //https://github.com/kamil-kolaczynski/synthclipse-demos/blob/master/src/jsx-demos/lighting-models/shaders/model/cook-torrance.glsl
-    vec3 Rs_numerator = vec3(fresnel(VdotH)
-                             * geoTerm(NdotH, VdotH, NdotL, NdotV)
-                             * beckmanRoughness(NdotH));
+    vec3 Rs_numerator = vec3(fresnel(VdotH) * geoTerm(NdotH, VdotH, NdotL, NdotV) * beckmanRoughness(NdotH));
     float Rs_denominator = NdotV * NdotL;
     vec3 Rs = clamp(Rs_numerator / Rs_denominator, 0.0, 1.0);
 
     vec3 final =  (specularColour * Rs) + (diffuseColour * (1-fresnel(NdotH)));
 
-    FragColor = envColour(v, n) * vec4(final, 1.0);
+    FragColor = vec4(final, 1.0);
 }

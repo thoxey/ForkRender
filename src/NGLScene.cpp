@@ -26,10 +26,7 @@ void NGLScene::initializeGL()
   sceneshader->setUniform("textureMap",0);
   // Initialise our environment map here
   initEnvironment();
-  (*sceneshader)["EnvProgram"]->use();
-  std::unique_ptr<ngl::Obj> mesh(new ngl::Obj("Box.obj"));
-  mesh->createVAO();
-  mesh->draw();
+
 
   myFork.init();
 
@@ -61,7 +58,11 @@ void NGLScene::paintGL()
   myFork.setTransform(&tx, projection, view);
   myFork.draw();
 
-
+//   ngl::ShaderLib *sceneshader = ngl::ShaderLib::instance();
+//  (*sceneshader)["EnvProgram"]->use();
+//  std::unique_ptr<ngl::Obj> mesh(new ngl::Obj("Box.obj"));
+//  mesh->createVAO();
+//  mesh->draw();
 
   auto stop = timer.now();
   m_deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count() / 1000.0f;;
