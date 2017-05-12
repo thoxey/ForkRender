@@ -41,7 +41,7 @@ void forkObj::draw()
 //#define TEAPOT
 #ifdef TEAPOT
   ngl::VAOPrimitives* prim = ngl::VAOPrimitives::instance();
-  prim->draw( "teapot" );
+  prim->draw( "troll" );
 #else
   std::unique_ptr<ngl::Obj> mesh(new ngl::Obj("fork.obj"));
   mesh->createVAO();

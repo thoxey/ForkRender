@@ -2,6 +2,8 @@
 
 #define IOR 1.45
 
+#define SHINEY 0.3
+
 // This is passed on from the vertex shader
 
 in vec3 fragWorldPos;
@@ -16,38 +18,6 @@ uniform sampler2D glossMap;
 
 // This is no longer a built-in variable
 layout (location=0) out vec4 FragColor;
-
-// Structure for holding light parameters
-struct LightInfo {
-    vec4 Position; // Light position in eye coords.
-    vec3 La; // Ambient light intensity
-    vec3 Ld; // Diffuse light intensity
-    vec3 Ls; // Specular light intensity
-};
-
-// We'll have a single light in the scene with some default values
-LightInfo Light = LightInfo(
-            vec4(5.0, 1.0, 2.0, 1.0),  // position
-            vec3(0.2, 0.2, 0.2),        // La
-            vec3(1.0, 1.0, 1.0),        // Ld
-            vec3(1.0, 1.0, 1.0)         // Ls
-            );
-
-// The material properties of our object
-struct MaterialInfo {
-    vec3 Ka; // Ambient reflectivity
-    vec3 Kd; // Diffuse reflectivity
-    vec3 Ks; // Specular reflectivity
-    float Shininess; // Specular shininess factor
-};
-
-// The object has a material
-uniform MaterialInfo Material = MaterialInfo(
-            vec3(0.1, 0.1, 0.1),    // Ka
-            vec3(0.9, 0.7, 0.2),    // Kd
-            vec3(1.0, 1.0, 1.0),    // Ks
-            0.5                    // Shininess
-            );
 
 float fresnel(float _VdotH)
 {
@@ -68,11 +38,11 @@ float fresnel(float _VdotH)
     return pow(1.0f - _VdotH, 5.0) * (1.0f - F0) + F0;
 #endif
 }
-
+//The beckman distribution funtion simulates microfacets on the surface
 float beckmanRoughness(float _NdotH)
 {
     //The shininess squared
-    float mSquared = Material.Shininess * Material.Shininess;
+    float mSquared = SHINEY * SHINEY;
 
     //Beckman distribution funcion
     float r1 = 1.0f / (4.0f * mSquared * pow(_NdotH, 4.0f));
@@ -95,34 +65,41 @@ float geoTerm(float _NdotH, float _VdotH, float _NdotL, float _NdotV)
 vec4 envColour(vec3 _v, vec3 _n)
 {
 
-    float smudge = texture(glossMap, fragmentTexCoord).r * 8;
-    float roughness = clamp(smudge,0,8);
-    return textureLod(envMap, reflect(_v, _n), roughness);
+    float smudge     = texture(glossMap, fragmentTexCoord).r * 8;
+    float roughness  = clamp(smudge,0,8);
+    vec4 smudgedEnv = textureLod(envMap, reflect(_v, _n), roughness);
+    return smudgedEnv * 0.5f;
 
 }
 
 void main()
 {
+    //Position of the light
+    vec3 lightPos = vec3(5.0f,5.0f,5.0f);
+    //Colour of the light
+    vec3 lightCol = vec3(1.0f,1.0f,1.0f);
+
     // Transform your input normal
     vec3 n = normalize(fragNormal);
     // Calculate the light vector
-    vec3 l = normalize( vec3(Light.Position) - fragWorldPos );
+    vec3 s = normalize( lightPos - fragWorldPos );
     // Calculate the vertex position
     vec3 v = normalize(-fragWorldPos);
     // Reflect the light about the surface normal
-    vec3 r = reflect(l, n);
+    vec3 r = reflect(s, n);
     //The half vector
-    vec3 h = normalize(v+l);
+    vec3 h = normalize(v+s);
+
     //Dot product of the surface normal and the half angle
     float NdotH = clamp(dot(n, h), 0.0, 1.0);
     //Dot of the light and the normal vectors
-    float NdotL = clamp(dot(n,l), 0.0,1.0);
+    float NdotL = clamp(dot(n,s), 0.0,1.0);
     //Dot of the normal and the and the view vector
     float NdotV = clamp(dot(n,v),0.0,1.0);
     //Dot of the vertex position and the half vector, used for fresnel
     float VdotH = clamp(dot(v,h), 0.0, 1.0);
 
-    vec3 specularColour = vec3(envColour(v, n)) * vec3(0.7) * Light.Ld;
+    vec3 specularColour = vec3(envColour(v, n)) * vec3(0.7) * lightCol;
 
     vec3 diffuseColour  =  vec3(0.7);
 
@@ -131,7 +108,9 @@ void main()
     float Rs_denominator = NdotV * NdotL;
     vec3 Rs = clamp(Rs_numerator / Rs_denominator, 0.0, 1.0);
 
+
     vec3 final =  (specularColour * Rs) + (diffuseColour * (1-fresnel(NdotH)));
 
-    FragColor = vec4(final, 1.0);
+    FragColor = (vec4(final, 1.0) + envColour(v, n))/2;
 }
+

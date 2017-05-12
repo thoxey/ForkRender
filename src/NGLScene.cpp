@@ -26,7 +26,9 @@ void NGLScene::initializeGL()
   sceneshader->setUniform("textureMap",0);
   // Initialise our environment map here
   initEnvironment();
-
+  ngl::ShaderLib *shader=ngl::ShaderLib::instance();
+  shader->use("ForkProgram");
+  shader->setUniform("glossMap", 1);
 
   myFork.init();
 
@@ -227,6 +229,5 @@ void NGLScene::initEnvironment()
   // Set our cube map texture to on the shader so we can use it
   ngl::ShaderLib *shader=ngl::ShaderLib::instance();
   shader->use("ForkProgram");
-  shader->setRegisteredUniform("envMap", 0);
-  shader->setRegisteredUniform("glossMap", 0);
+  shader->setUniform("envMap", 0);
 }
