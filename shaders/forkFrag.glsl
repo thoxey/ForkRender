@@ -68,7 +68,7 @@ vec4 envColour(vec3 _v, vec3 _n)
     float smudge     = texture(glossMap, fragmentTexCoord).r * 8;
     float roughness  = clamp(smudge,0,8);
     vec4 smudgedEnv = textureLod(envMap, reflect(_v, _n), roughness);
-    return smudgedEnv * 0.5f;
+    return smudgedEnv * 0.1f;
 
 }
 
@@ -101,7 +101,7 @@ void main()
 
     vec3 specularColour = vec3(envColour(v, n)) * vec3(0.7) * lightCol;
 
-    vec3 diffuseColour  =  vec3(0.7);
+    vec3 diffuseColour  =  vec3(1.0);
 
     //https://github.com/kamil-kolaczynski/synthclipse-demos/blob/master/src/jsx-demos/lighting-models/shaders/model/cook-torrance.glsl
     vec3 Rs_numerator = vec3(fresnel(VdotH) * geoTerm(NdotH, VdotH, NdotL, NdotV) * beckmanRoughness(NdotH));

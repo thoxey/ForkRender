@@ -29,6 +29,7 @@ void forkObj::setTransform(ngl::Transformation *_TX, ngl::Mat4 _projection, ngl:
   m_shader->setRegisteredUniform("N", N);
   m_shader->setRegisteredUniform("invV", _view.inverse());
 }
+
 const ngl::Transformation forkObj::getTransform() const noexcept
 {
   //return m_TX;
@@ -38,7 +39,7 @@ void forkObj::draw()
 {
   ngl::ShaderLib *m_shader = ngl::ShaderLib::instance();
   (*m_shader)["ForkProgram"]->use();
-//#define TEAPOT
+#define TEAPOT
 #ifdef TEAPOT
   ngl::VAOPrimitives* prim = ngl::VAOPrimitives::instance();
   prim->draw( "troll" );
