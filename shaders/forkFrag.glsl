@@ -68,24 +68,10 @@ float noise (vec2 st)
 
 float fresnel(float _VdotH)
 {
-#define FULLFRESNEL
-#ifdef FULLFRESNEL
-    float g = sqrt((IOR*IOR)+(_VdotH*_VdotH)-1);
-    //Fresnel term one
-    float F1 = ((g-_VdotH)*(g-_VdotH))/
-            (2*((g+_VdotH)+(g+_VdotH)));
-    //Fresnel term two
-    float F2 = 1+((_VdotH*(g+_VdotH)-1)*(_VdotH*(g+_VdotH)-1))
-            /    ((_VdotH*(g-_VdotH)-1)*(_VdotH*(g-_VdotH)+1));
-    //full fresnel
-    return min(1.0, F1 * F2);
-#else
-    //Schlick approximation
-    float F0 = 0.8;
+    //Schlick approximation using spherical gaussian, as in UE4
     //https://de45xmedrsdbp.cloudfront.net/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf
-    return min(1.0, F0 + (1 - F0)*pow(2, ((-5.55473*_VdotH)-(-6.98316)*_VdotH));
-            //return min(1.0, pow(1.0f - _VdotH, 5.0) * (1.0f - F0) + F0);
-        #endif
+    float F0 = 0.8;
+    return min(1.0, F0 + (1 - F0)*pow(2, ((-5.55473*_VdotH)-(-6.98316)*_VdotH)));
 }
 
 float roughnessDist(float _NdotH)
@@ -116,7 +102,7 @@ float NDF(float _NdotH)
 
 vec4 envColour(vec3 _v, vec3 _n)
 {
-    vec4 env        = textureLod(envMap, reflect(_v, _n), 0);
+    vec4 env        = textureLod(envMap, reflect(_v, _n), 4);
     vec4 smudgedEnv = textureLod(envMap, reflect(_v, _n), 6);
     return mix(smudgedEnv, env, noise(fragmentTexCoord.xx*1000));
 }
@@ -168,8 +154,14 @@ void main()
 
     //    vec3 final =  specular + (diffuseColour * (1-fresnel(NdotH)));
 
-    FragColor = mix(vec4(final, 1.0f), envColour(v,n), geoTerm);
+
 //        FragColor = vec4(final, 1.0f);
+    if(fragmentTexCoord.x>0.5)
+        FragColor = mix(vec4(final, 1.0f), vec4(vec3(noise(fragmentTexCoord*100)),1.0f), geoTerm);
+    else
+        FragColor = mix(vec4(final, 1.0f), envColour(v,n), geoTerm);
+
+
+//    FragColor = vec4(fragmentTexCoord, 0.0f, 1.0f);
 //    FragColor = vec4(vec3(noise(fragmentTexCoord*50)),1.0);
 }
-

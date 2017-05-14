@@ -162,34 +162,17 @@
           <set>Qt::AlignCenter</set>
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
-          <item row="0" column="0">
-           <widget class="QPushButton" name="m_Reset_Button">
-            <property name="text">
-             <string>Reset All Values</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QCheckBox" name="m_Scratches_Button">
-            <property name="text">
-             <string>Scratches</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="m_Env_Button">
-            <property name="text">
-             <string>Env Map</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="1">
            <widget class="QPushButton" name="m_Spin_Button">
             <property name="text">
              <string>Spin</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QPushButton" name="m_Reset_Button">
+            <property name="text">
+             <string>Reset All Values</string>
             </property>
            </widget>
           </item>
@@ -416,7 +399,7 @@
      <x>0</x>
      <y>0</y>
      <width>891</width>
-     <height>22</height>
+     <height>19</height>
     </rect>
    </property>
   </widget>

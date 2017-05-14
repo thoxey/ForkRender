@@ -13,7 +13,6 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHeaderView>
@@ -46,10 +45,8 @@ public:
     QSlider *m_z_rotation;
     QGroupBox *groupBox_6;
     QGridLayout *gridLayout_6;
-    QPushButton *m_Reset_Button;
-    QCheckBox *m_Scratches_Button;
-    QCheckBox *m_Env_Button;
     QPushButton *m_Spin_Button;
+    QPushButton *m_Reset_Button;
     QGroupBox *groupBox_3;
     QGridLayout *gridLayout;
     QSlider *m_y_trn_slider;
@@ -164,26 +161,15 @@ public:
         gridLayout_6->setSpacing(6);
         gridLayout_6->setContentsMargins(11, 11, 11, 11);
         gridLayout_6->setObjectName(QStringLiteral("gridLayout_6"));
-        m_Reset_Button = new QPushButton(groupBox_6);
-        m_Reset_Button->setObjectName(QStringLiteral("m_Reset_Button"));
-
-        gridLayout_6->addWidget(m_Reset_Button, 0, 0, 1, 1);
-
-        m_Scratches_Button = new QCheckBox(groupBox_6);
-        m_Scratches_Button->setObjectName(QStringLiteral("m_Scratches_Button"));
-
-        gridLayout_6->addWidget(m_Scratches_Button, 1, 1, 1, 1);
-
-        m_Env_Button = new QCheckBox(groupBox_6);
-        m_Env_Button->setObjectName(QStringLiteral("m_Env_Button"));
-        m_Env_Button->setChecked(true);
-
-        gridLayout_6->addWidget(m_Env_Button, 1, 0, 1, 1);
-
         m_Spin_Button = new QPushButton(groupBox_6);
         m_Spin_Button->setObjectName(QStringLiteral("m_Spin_Button"));
 
         gridLayout_6->addWidget(m_Spin_Button, 0, 1, 1, 1);
+
+        m_Reset_Button = new QPushButton(groupBox_6);
+        m_Reset_Button->setObjectName(QStringLiteral("m_Reset_Button"));
+
+        gridLayout_6->addWidget(m_Reset_Button, 0, 0, 1, 1);
 
 
         gridLayout_2->addWidget(groupBox_6, 7, 0, 1, 1);
@@ -294,7 +280,7 @@ public:
         MainWindow->setCentralWidget(CentralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 891, 22));
+        menuBar->setGeometry(QRect(0, 0, 891, 19));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -317,10 +303,8 @@ public:
         yRotLabel_2->setText(QApplication::translate("MainWindow", "Y", 0));
         zRotLabel_2->setText(QApplication::translate("MainWindow", "Z", 0));
         groupBox_6->setTitle(QApplication::translate("MainWindow", "Other Controls", 0));
-        m_Reset_Button->setText(QApplication::translate("MainWindow", "Reset All Values", 0));
-        m_Scratches_Button->setText(QApplication::translate("MainWindow", "Scratches", 0));
-        m_Env_Button->setText(QApplication::translate("MainWindow", "Env Map", 0));
         m_Spin_Button->setText(QApplication::translate("MainWindow", "Spin", 0));
+        m_Reset_Button->setText(QApplication::translate("MainWindow", "Reset All Values", 0));
         groupBox_3->setTitle(QApplication::translate("MainWindow", "Translate", 0));
         yTrnLabel->setText(QApplication::translate("MainWindow", "Y", 0));
         xTrnLabel->setText(QApplication::translate("MainWindow", "X", 0));

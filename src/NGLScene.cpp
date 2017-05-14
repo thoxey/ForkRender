@@ -59,7 +59,7 @@ void NGLScene::paintGL()
 //  mesh->draw();
 
   auto stop = timer.now();
-  m_deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count() / 1000.0f;;
+  m_deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count() / 1000.0f;
 
   update();
 }
