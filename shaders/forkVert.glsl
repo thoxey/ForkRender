@@ -9,7 +9,7 @@ uniform mat3 N; // This is the inverse transpose of the MV matrix
 layout (location=0) in vec3 VertexPosition;
 
 // The texture coordinate attribute
-layout (location=1) in vec2 TexCoord;
+layout (location=1) in vec2 inUV;
 
 // The vertex normal attribute
 layout (location=2) in vec3 VertexNormal;
@@ -28,7 +28,7 @@ void main() {
 
     fragWorldPos = vec3(MV * vec4(VertexPosition, 1.0f));
 
-    fragmentTexCoord = TexCoord;
+    fragmentTexCoord = inUV;
 
     fragNormal   = N  * VertexNormal;
 

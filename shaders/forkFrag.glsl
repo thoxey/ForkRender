@@ -2,7 +2,7 @@
 
 #define IOR 1.45
 
-#define ROUGH 0.1
+#define ROUGH 1
 
 #define SHINEY 0.5
 
@@ -23,6 +23,49 @@ uniform sampler2D glossMap;
 // This is no longer a built-in variable
 layout (location=0) out vec4 FragColor;
 
+//Clamps between 0 and 1 (Basically HLSL now.)
+float saturate(float i)
+{
+    return clamp(i, 0, 1);
+}
+//#PolymorphismIsCool
+vec3 saturate(vec3 i)
+{
+    return clamp(i, 0, 1);
+}
+
+// The following section is edited from :-
+// Patricio Gonzalez Vivo (2015). The Book of Shaders : Random [online]. [Accessed 03/04/2017].
+// Available from: "https://thebookofshaders.com/10/".
+float random (vec2 st)
+{
+    return fract(sin(dot(st.xy,vec2(12.9898,78.233)))*43758.5453123);
+    //return max(ret, 0.85);
+}
+float noise (vec2 st)
+{
+    vec2 i = floor(st);
+    vec2 f = fract(st);
+
+    // Four corners in 2D of a tile
+    float a = random(i);
+    float b = random(i + vec2(1.0, 0.0));
+    float c = random(i + vec2(0.0, 1.0));
+    float d = random(i + vec2(1.0, 1.0));
+
+    // Smooth Interpolation
+
+    // Cubic Hermine Curve.  Same as SmoothStep()
+    vec2 u = f*f*(3.0-2.0*f);
+    // u = smoothstep(0.,1.,f);
+
+    // Mix 4 coorners porcentages
+    return mix(a, b, u.x) +
+            (c - a)* u.y * (1.0 - u.x) +
+            (d - b) * u.x * u.y;
+}
+// end of Citation
+
 float fresnel(float _VdotH)
 {
 #define FULLFRESNEL
@@ -41,46 +84,27 @@ float fresnel(float _VdotH)
     float F0 = 0.8;
     //https://de45xmedrsdbp.cloudfront.net/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf
     return min(1.0, F0 + (1 - F0)*pow(2, ((-5.55473*_VdotH)-(-6.98316)*_VdotH));
-    //return min(1.0, pow(1.0f - _VdotH, 5.0) * (1.0f - F0) + F0);
-#endif
+            //return min(1.0, pow(1.0f - _VdotH, 5.0) * (1.0f - F0) + F0);
+        #endif
 }
-//The beckman distribution funtion simulates microfacets on the surface
+
 float roughnessDist(float _NdotH)
 {
-#define GGX
     //The shininess squared
     float alpha  = ROUGH*ROUGH;
     float alpha2 = alpha*alpha;
-#ifdef GGX
+
     float r1 = _NdotH * _NdotH;
     float r2 = (alpha2 - 1.0) + 1.0;
     float r3 = r1*r2;
     return min(1.0, alpha2 / (PI * r3 * r3));
-#else
-    //Beckman distribution funcion
-    float r1 = 1.0f / (4.0f * mSquared * pow(_NdotH, 4.0f));
-    float r2 = _NdotH * _NdotH - 1.0f;
-    float r3 = alpha * _NdotH * _NdotH;
-    return min(1.0, r1 * exp(r2/r3));
-#endif
 }
-
-//Cook Paper page 5
-//float geoTerm(float _NdotH, float _VdotH, float _NdotL, float _NdotV)
-//{
-//    float geoNum = 2.0 * _NdotH;
-//    float geoDen = _VdotH;
-
-//    float geo_b = (geoNum * _NdotV) / geoDen;
-//    float geo_c = (geoNum * _NdotL) / geoDen;
-//    return min(1.0, min(geo_b, geo_c));
-//}
 
 float geoCalc(float _Ndot, float k)
 {
     return _Ndot / ((_Ndot*(1-k))+k);
 }
-
+//normal distribution function GGX/Trowbridge-Reitz
 float NDF(float _NdotH)
 {
     float _NdotH2 = _NdotH * _NdotH;
@@ -92,26 +116,15 @@ float NDF(float _NdotH)
 
 vec4 envColour(vec3 _v, vec3 _n)
 {
-    float smudge     = texture(glossMap, fragmentTexCoord).r * 8;
-    float roughness  = clamp(smudge,0,8);
-    vec4 smudgedEnv = textureLod(envMap, reflect(_v, _n), roughness);
-    return smudgedEnv * 0.5f;
+    vec4 env        = textureLod(envMap, reflect(_v, _n), 0);
+    vec4 smudgedEnv = textureLod(envMap, reflect(_v, _n), 6);
+    return mix(smudgedEnv, env, noise(fragmentTexCoord.xx*1000));
 }
-
-// The following section is from :-
-// Patricio Gonzalez Vivo (2015). The Book of Shaders : Random [online]. [Accessed 03/04/2017].
-// Available from: "https://thebookofshaders.com/10/".
-float random (vec2 st)
-{
-    float ret = fract(sin(dot(st.xy,vec2(12.9898,78.233)))*43758.5453123);
-    return max(ret, 0.8);
-}
-// end of Citation
 
 void main()
 {
     //Position of the light
-    vec3 lightPos = vec3(2.0f,2.0f,2.0f);
+    vec3 lightPos = vec3(2.0f,8.0f,2.0f);
     //Colour of the light
     vec3 lightCol = vec3(1.0f,1.0f,1.0f);
 
@@ -127,37 +140,36 @@ void main()
     vec3 h = normalize(v+s);
 
     //Dot product of the surface normal and the half angle
-    float NdotH = clamp(dot(n, h), 0.0, 1.0);
+    float NdotH = saturate(dot(n, h));
     //Dot of the light and the normal vectors
-    float NdotL = clamp(dot(n,s), 0.0,1.0);
+    float NdotL = saturate(dot(n,s));
     //Dot of the normal and the and the view vector
-    float NdotV = clamp(dot(n,v),0.0,1.0);
+    float NdotV = saturate(dot(n,v));
     //Dot of the vertex position and the half vector, used for fresnel
-    float VdotH = clamp(dot(v,h), 0.0, 1.0);
+    float VdotH = saturate(dot(v,h));
 
     float k1 = (ROUGH+1)*(ROUGH+1);
     float k  = k1/8;
 
-    vec3 diffuseColour  =  vec3(0.8, 0.5, 0.1);
+    vec3 diffuseColour  =  vec3(0.8);
 
     float geoTerm = min(geoCalc(NdotV, k), geoCalc(NdotL, k));
 
-    //https://github.com/kamil-kolaczynski/synthclipse-demos/blob/master/src/jsx-demos/lighting-models/shaders/model/cook-torrance.glsl
-//    vec3 specNum  = vec3(fresnel(VdotH) * geoTerm * roughnessDist(NdotH));
-//    float specDen = PI * NdotV * NdotL;
-//    vec3 specular = clamp(specNum / specDen, 0.0, 1.0);
+    vec3 specular = vec3(0.0);
 
-    vec3 specNum  = vec3(fresnel(VdotH) * geoTerm * NDF(NdotH));
-    float specDen = 4*NdotL*NdotV;
-    vec3 specular = clamp(specNum / specDen, 0.0, 1.0);
+    if(NdotL > 0)
+    {
+        vec3 specNum  = lightCol * vec3(fresnel(VdotH) * geoTerm * NDF(NdotH));
+        float specDen = 4*NdotL*NdotV;
+        specular += saturate(specNum / specDen);
+    }
 
+    vec3 final =  NdotL * (k + specular * (1.0 - k));
 
+    //    vec3 final =  specular + (diffuseColour * (1-fresnel(NdotH)));
 
-    vec3 final = diffuseColour * NdotL * (k + specular * (1.0 - k));
-
-//    vec3 final =  specular + (diffuseColour * (1-fresnel(NdotH)));
-
-    FragColor = mix(vec4(final, 1.0f), envColour(v,n), random(fragmentTexCoord));
-
+    FragColor = mix(vec4(final, 1.0f), envColour(v,n), geoTerm);
+//        FragColor = vec4(final, 1.0f);
+//    FragColor = vec4(vec3(noise(fragmentTexCoord*50)),1.0);
 }
 

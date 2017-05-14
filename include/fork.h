@@ -18,6 +18,20 @@ public:
 private:
     ngl::ShaderLib *m_shader;
     ngl::Transformation *m_TX;
+    //Env map management, taken from Env Map Workshop and adapted
+    //Author: Richard Southern
+    //Accesed: 30/03/17
+    /// The ID of our environment texture
+    GLuint m_envTex, m_glossMapTex;
+
+    /// Initialise the entire environment map
+    void initEnvironment();
+
+    /// Utility function for loading up a 2D texture
+    void initTexture(const GLuint&, GLuint &, const char *);
+
+    /// Initialise a single side of the environment map
+    void initEnvironmentSide(GLenum /*target*/, const char* /*filename*/);
 };
 
 #endif // FORK_H
