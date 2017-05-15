@@ -2,15 +2,14 @@
 
 forkObj::forkObj()
 {
-
-}
-void forkObj::init()
-{
+  m_mesh.reset(new ngl::Obj("fork.obj"));
+  m_mesh->createVAO();
   initEnvironment();
   m_shader = ngl::ShaderLib::instance();
   m_shader->loadShader("ForkProgram","shaders/forkVert.glsl","shaders/forkFrag.glsl");
 }
-void forkObj::setTransform(ngl::Transformation *_TX, ngl::Mat4 _projection, ngl::Mat4 _view)
+void forkObj::setTransform(ngl::Transformation *_TX, ngl::Mat4 _projection, ngl::Mat4 _view,
+                           ngl::Vec3 col, ngl::Vec3 lightPos, float rough, float shine)
 {
   m_TX = _TX;
 
@@ -29,26 +28,18 @@ void forkObj::setTransform(ngl::Transformation *_TX, ngl::Mat4 _projection, ngl:
   m_shader->setRegisteredUniform("MV", MV);
   m_shader->setRegisteredUniform("N", N);
   m_shader->setRegisteredUniform("invV", _view.inverse());
-}
-
-const ngl::Transformation forkObj::getTransform() const noexcept
-{
-  //return m_TX;
+  m_shader->setRegisteredUniform("lightCol", col);
+  m_shader->setRegisteredUniform("lightPos", lightPos);
+  m_shader->setRegisteredUniform("roughness", rough);
+  m_shader->setRegisteredUniform("shineyness", shine);
 }
 
 void forkObj::draw()
 {
   ngl::ShaderLib *m_shader = ngl::ShaderLib::instance();
   (*m_shader)["ForkProgram"]->use();
-//#define TEAPOT
-#ifdef TEAPOT
-  ngl::VAOPrimitives* prim = ngl::VAOPrimitives::instance();
-  prim->draw( "troll" );
-#else
-  std::unique_ptr<ngl::Obj> mesh(new ngl::Obj("fork.obj"));
-  mesh->createVAO();
-  mesh->draw();
-#endif
+
+  m_mesh->draw();
 }
 
 //Env map management, taken from Env Map Workshop and adapted
@@ -153,6 +144,4 @@ void forkObj::initEnvironment()
   ngl::ShaderLib *shader=ngl::ShaderLib::instance();
   shader->use("ForkProgram");
   shader->setUniform("envMap", 0);
-  initTexture(1,m_glossMapTex,"images/gloss.png");
-  shader->setUniform("glossMap",1);
 }

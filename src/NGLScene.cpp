@@ -5,15 +5,14 @@
 #include <ngl/ShaderLib.h>
 #include <ngl/NGLInit.h>
 #include <ngl/Transformation.h>
+#include <QColorDialog>
 
 #include <chrono>
 
 #include "fork.h"
 
-NGLScene::NGLScene(QWidget * _parent) : QOpenGLWidget(_parent), m_turnatable(false), m_Zoom(4.0f)
-{
-
-}
+NGLScene::NGLScene(QWidget * _parent) : QOpenGLWidget(_parent), m_turnatable(false), m_Zoom(8.0f)
+{;}
 void NGLScene::initializeGL()
 {
   ngl::NGLInit::instance();
@@ -22,9 +21,9 @@ void NGLScene::initializeGL()
   ngl::ShaderLib *shader=ngl::ShaderLib::instance();
   shader->use("ForkProgram");
 
-  myFork.init();
-
   glEnable(GL_DEPTH_TEST);
+
+  m_Fork.reset(new forkObj());
 
 }
 void NGLScene::paintGL()
@@ -42,30 +41,20 @@ void NGLScene::paintGL()
 
   //Spin
   if(m_turnatable)
-    m_Rot.m_y += (m_deltaTime/10.0f);
+    m_Rot.m_y += (m_deltaTime*10.0f);
 
   ngl::Transformation tx;
 
   tx.setRotation(m_Rot);
   tx.setPosition(m_Trn);
 
-  myFork.setTransform(&tx, projection, view);
-  myFork.draw();
-
-//   ngl::ShaderLib *sceneshader = ngl::ShaderLib::instance();
-//  (*sceneshader)["EnvProgram"]->use();
-//  std::unique_ptr<ngl::Obj> mesh(new ngl::Obj("Box.obj"));
-//  mesh->createVAO();
-//  mesh->draw();
+  m_Fork->setTransform(&tx, projection, view, m_Col, m_LightPos, m_roughness, m_shineyness);
+  m_Fork->draw();
 
   auto stop = timer.now();
   m_deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count() / 1000.0f;
 
   update();
-}
-void NGLScene::resizeGL(int _w, int _h)
-{
-
 }
 void NGLScene::setXRot(int _v)
 {
@@ -113,5 +102,44 @@ void NGLScene::swapSpin()
 {
   m_turnatable = !m_turnatable;
 }
-
-
+void NGLScene::setColour()
+{
+  QColor colour = QColorDialog::getColor();
+  if(colour.isValid())
+    {
+      m_Col.m_x = colour.redF();
+      m_Col.m_y = colour.greenF();
+      m_Col.m_z = colour.blueF();
+    }
+  update();
+}
+void NGLScene::setLightX(int _v)
+{
+  double change = _v;
+  m_LightPos.m_x = change;
+  update();
+}
+void NGLScene::setLightY(int _v)
+{
+  double change = _v;
+  m_LightPos.m_y = change;
+  update();
+}
+void NGLScene::setLightZ(int _v)
+{
+  double change = _v;
+  m_LightPos.m_z = change;
+  update();
+}
+void NGLScene::setRough(int _v)
+{
+  double change = _v;
+  m_roughness = change/100;
+  update();
+}
+void NGLScene::setShine(int _v)
+{
+  double change = _v;
+  m_shineyness = change/100;
+  update();
+}

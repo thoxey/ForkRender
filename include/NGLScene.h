@@ -24,7 +24,6 @@ public :
   NGLScene(QWidget * _parent);
   void initializeGL() override;
   void paintGL() override;
-  void resizeGL(int _w, int _h) override;
 public slots :
 
   void setXTrnSlider(int _v);
@@ -35,21 +34,32 @@ public slots :
   void setYRot(int _v);
   void setZRot(int _v);
 
+  void setLightX(int _v);
+  void setLightY(int _v);
+  void setLightZ(int _v);
+
+  void setRough(int _v);
+  void setShine(int _v);
+
   void setZoom(int _v);
 
   void swapSpin();
 
-  void setEnvToggle(bool _v);
+  void setColour();
 
 private :
   ngl::Vec3 m_Trn;
   ngl::Vec3 m_Rot;
-  ngl::Vec4 m_Col = {0.9, 0.9, 0.9, 1.0f};
+  ngl::Vec3 m_Col = {0.9, 0.9, 0.9};
+  ngl::Vec3 m_LightPos = {5, 5, 5};
 
   bool m_turnatable;
   float m_deltaTime;
 
-  forkObj myFork;
+  float m_roughness  = 0.5f;
+  float m_shineyness = 0.5f;
+
+  std::unique_ptr<forkObj> m_Fork;
 
   std::unique_ptr<ngl::Obj> m_mesh;
   float m_Zoom;

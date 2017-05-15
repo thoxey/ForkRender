@@ -11,11 +11,12 @@ class forkObj
 {
 public:
     forkObj();
-    void init();
-    void setTransform(ngl::Transformation *_TX, ngl::Mat4 _projection, ngl::Mat4 _view);
-    const ngl::Transformation getTransform() const noexcept;
+    void setTransform(ngl::Transformation *_TX, ngl::Mat4 _projection, ngl::Mat4 _view, ngl::Vec3 col, ngl::Vec3 lightPos, float rough, float shine);
     void draw();
 private:
+
+    std::unique_ptr<ngl::Obj> m_mesh;
+
     ngl::ShaderLib *m_shader;
     ngl::Transformation *m_TX;
     //Env map management, taken from Env Map Workshop and adapted

@@ -21,6 +21,18 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->m_Zoom,SIGNAL(valueChanged(int)), m_gl,SLOT(setZoom(int)));
 
   connect(ui->m_Spin_Button,SIGNAL(clicked(bool)),m_gl,SLOT(swapSpin()));
+
+
+  connect(ui->m_lightX,SIGNAL(valueChanged(int)),m_gl,SLOT(setLightX(int)));
+  connect(ui->m_lightY,SIGNAL(valueChanged(int)),m_gl,SLOT(setLightY(int)));
+  connect(ui->m_lightZ,SIGNAL(valueChanged(int)),m_gl,SLOT(setLightZ(int)));
+
+  connect(ui->m_roughSlider,SIGNAL(valueChanged(int)),m_gl,SLOT(setRough(int)));
+  connect(ui->m_shineySlider,SIGNAL(valueChanged(int)),m_gl,SLOT(setShine(int)));
+
+  connect(ui->m_colourButton,SIGNAL(clicked(bool)),m_gl,SLOT(setColour()));
+
+
 }
 
 MainWindow::~MainWindow()
